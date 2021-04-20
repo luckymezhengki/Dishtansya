@@ -31,8 +31,8 @@ class AuthController extends Controller
 
         $guest->save();
 
-        /* $welcome = ['email' => $request->email];
-        SendEmail::dispatch($welcome); */
+        $welcome = ['email' => $request->email];
+        SendEmail::dispatch($welcome);
 
         return response()->json(['message' => 'User successfully registered'], 201 );
     }
