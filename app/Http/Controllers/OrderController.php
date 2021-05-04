@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use Auth;
 use App\Order;
 use App\Product;
 
 class OrderController extends Controller
 {
-    public function store( Request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required',
@@ -25,6 +26,7 @@ class OrderController extends Controller
         if( $checkStock->available_stock > 0 && $request->quantity <= $checkStock->available_stock )
         {
             $order = new Order([
+                'user_id' => Auth::user()->id,
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity
             ]);
