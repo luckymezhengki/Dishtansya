@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use App\User;
 use App\Jobs\SendEmail;
 use Validator;
@@ -50,14 +49,14 @@ class AuthController extends Controller
         }
 
         $logged = [ 'email' => $request->email, 'password' => $request->password ];
-
-        if( !Auth::attempt($logged))
+        $token = Auth::attempt($logged);
+        if( !$token)
         {
             return response()->json(['message' => 'invalid credentials'], 401);
         }
         else
         {
-            return response()->json([ 'access_token' => Auth::attempt($logged)]);
+            return response()->json(['access_token' => $token ], 201);
         }
     }
 }
